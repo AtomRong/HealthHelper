@@ -85,7 +85,23 @@ app = tornado.web.Application(
 (r"/sentInvit", SendInvitHandler),
 (r"/getFriendList", GetFriendListHandler),
 (r"/addFriend", AddFriendHandler),
-(r"/delFriend", DelFriendHandler),],
+(r"/delFriend", DelFriendHandler),
+
+(r"/ios/", HealthHelperHandler),
+(r"/ios/planDone", PlanDoneHandler),
+(r"/ios/planUndone", PlanUndoneHandler),
+(r"/ios/recordWeek", RecordMonthHandler),
+(r"/ios/recordMonth", RecordMonthHandler),
+(r"/ios/invitPro", InvitProHandler),
+(r"/ios/invitPend", InvitPendHandler),
+(r"/ios/createPlan", CreatePlanHandler),
+(r"/ios/sentInvit", SendInvitHandler),
+(r"/ios/getFriendList", GetFriendListHandler),
+(r"/ios/addFriend", AddFriendHandler),
+(r"/ios/delFriend", DelFriendHandler),
+
+
+								],
 template_path = os.path.join(os.path.dirname(__file__), "template"),
 static_path = os.path.join(os.path.dirname(__file__), "static"),
 debug=True
