@@ -13,6 +13,9 @@ class PlanDoneHandler(tornado.web.RequestHandler):
 		#data = [["2014-06-11 20:00","2014-06-11 20:30","内环", "running"], ["2014-06-13 20:00","2014-06-13 20:30","内环", "running"]]
 		data = ''
 		self.write(json.dumps(data))
+	def post(self):
+		self.write("dale wangzeming 是 打了王泽民\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+		
 		
 class PlanUndoneHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -100,8 +103,7 @@ app = tornado.web.Application(
 (r"/ios/addFriend", AddFriendHandler),
 (r"/ios/delFriend", DelFriendHandler),
 
-
-								],
+],
 template_path = os.path.join(os.path.dirname(__file__), "template"),
 static_path = os.path.join(os.path.dirname(__file__), "static"),
 debug=True
