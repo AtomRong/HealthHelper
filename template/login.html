@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>HealthyHelper</title>
+	<link href="{{static_url("login/login.css")}}" rel="stylesheet" type="text/css" />
+	<script src="{{static_url("login/login.js")}}" type="text/javascript" ></script>
+</head>
+
+<body>
+	<div id="container">
+		<form action="/healthHelper" method="get" id="loginForm">
+		
+			<p id="title">LOGIN</p>
+			
+			<div id="top">
+				<div class="left">
+				<p>Id</p> 		
+				<p>Password</p>
+				</div>
+				
+				<div class="right">
+				<p><input type="text" name="id"/></p>
+				<p><input type="password" name="password"/></p>
+				</div>	
+			</div>			
+			
+			<div id="bottom">
+				<p>
+					<input type="submit" name="submit" value="login" id = "login"/>
+				</p>
+			</div>
+		</form>
+		<form action='/register' method = 'get' id="registerForm">
+			<input type="submit" name="submit" value="register" id="register"/>
+		</form>
+	</div>
+</body>
+</html>

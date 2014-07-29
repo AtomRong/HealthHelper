@@ -4,18 +4,41 @@ import tornado.ioloop
 import tornado.web
 import json
 
-class HealthHelperHandler(tornado.web.RequestHandler):
+class LoginHandler(tornado.web.RequestHandler):
+	def get(self):
+		self.render('login.html')
+		
+class LogoutHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.render('HealthHelper.html')
+
+class RegisterHandler(tornado.web.RequestHandler):
+	def get(self):
+		print self.render('register.html')
+		
+class RegisterCheckHandler(tornado.web.RequestHandler):
+	def get(self):
+		id = "1245"
+		self.write(json.dumps(id))
+		#self.redirect('/')
+
+		
+class HealthHelperHandler(tornado.web.RequestHandler):
+	def get(self):
+		id = self.get_argument('id')
+		pw = self.get_argument('password')
+		print id
+		print pw
+		if id == '1' and pw == '1':
+			self.render('HealthHelper.html')
+		else:
+			self.redirect('/')
 		
 class PlanDoneHandler(tornado.web.RequestHandler):
 	def get(self):
 		#data = [["2014-06-11 20:00","2014-06-11 20:30","内环", "running"], ["2014-06-13 20:00","2014-06-13 20:30","内环", "running"]]
 		data = ''
 		self.write(json.dumps(data))
-	def post(self):
-		self.write("dale wangzeming 是 打了王泽民\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-		
 		
 class PlanUndoneHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -77,7 +100,11 @@ class DelFriendHandler(tornado.web.RequestHandler):
 		self.write(json.dumps('Delete succeed!'))
 	
 app = tornado.web.Application(
-[(r"/", HealthHelperHandler),
+[(r"/", LoginHandler),
+(r"/logout", LogoutHandler),
+(r"/register", RegisterHandler),
+(r"/registerCheck", RegisterCheckHandler),
+(r"/healthHelper", HealthHelperHandler),
 (r"/planDone", PlanDoneHandler),
 (r"/planUndone", PlanUndoneHandler),
 (r"/recordWeek", RecordMonthHandler),
@@ -90,7 +117,12 @@ app = tornado.web.Application(
 (r"/addFriend", AddFriendHandler),
 (r"/delFriend", DelFriendHandler),
 
+
 (r"/ios/", HealthHelperHandler),
+(r"/ios/logout", LogoutHandler),
+(r"/ios/register", RegisterHandler),
+(r"/ios/registerCheck", RegisterCheckHandler),
+(r"/ios/healthHelper", HealthHelperHandler),
 (r"/ios/planDone", PlanDoneHandler),
 (r"/ios/planUndone", PlanUndoneHandler),
 (r"/ios/recordWeek", RecordMonthHandler),
@@ -102,6 +134,7 @@ app = tornado.web.Application(
 (r"/ios/getFriendList", GetFriendListHandler),
 (r"/ios/addFriend", AddFriendHandler),
 (r"/ios/delFriend", DelFriendHandler),
+
 
 ],
 template_path = os.path.join(os.path.dirname(__file__), "template"),
