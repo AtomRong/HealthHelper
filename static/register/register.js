@@ -4,10 +4,11 @@ function check() {
 		var form = document.getElementById("RegisterFrom");
 		var bnt = form.elements["submit"];
 		bnt.disabled = true;
+		var user = $F('user');
+		var pw = $F('pw');
 		new Ajax.Request('/registerCheck', {
-		method:'get', 
+		method:'get', parameters: {user: user, password: pw},
 		onSuccess: function(transport) {
-			alert('hello');
 			var response = transport.responseText.evalJSON() ;
 			alert('You id is ' + response);
 			proceed();

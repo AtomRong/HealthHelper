@@ -7,6 +7,7 @@ import json
 class LoginHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.render('login.html')
+	
 		
 class LogoutHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -14,13 +15,14 @@ class LogoutHandler(tornado.web.RequestHandler):
 
 class RegisterHandler(tornado.web.RequestHandler):
 	def get(self):
-		print self.render('register.html')
+		self.render('register.html')
 		
 class RegisterCheckHandler(tornado.web.RequestHandler):
 	def get(self):
+		user = self.get_argument('user');
+		pw = self.get_argument('password');
 		id = "1245"
 		self.write(json.dumps(id))
-		#self.redirect('/')
 
 		
 class HealthHelperHandler(tornado.web.RequestHandler):
@@ -29,7 +31,7 @@ class HealthHelperHandler(tornado.web.RequestHandler):
 		pw = self.get_argument('password')
 		print id
 		print pw
-		if id == '1' and pw == '1':
+		if id == '1245' and pw == '111111':
 			self.render('HealthHelper.html')
 		else:
 			self.redirect('/')
@@ -104,6 +106,7 @@ app = tornado.web.Application(
 (r"/logout", LogoutHandler),
 (r"/register", RegisterHandler),
 (r"/registerCheck", RegisterCheckHandler),
+
 (r"/healthHelper", HealthHelperHandler),
 (r"/planDone", PlanDoneHandler),
 (r"/planUndone", PlanUndoneHandler),
@@ -118,10 +121,12 @@ app = tornado.web.Application(
 (r"/delFriend", DelFriendHandler),
 
 
+
 (r"/ios/", HealthHelperHandler),
 (r"/ios/logout", LogoutHandler),
 (r"/ios/register", RegisterHandler),
 (r"/ios/registerCheck", RegisterCheckHandler),
+
 (r"/ios/healthHelper", HealthHelperHandler),
 (r"/ios/planDone", PlanDoneHandler),
 (r"/ios/planUndone", PlanUndoneHandler),
@@ -134,7 +139,6 @@ app = tornado.web.Application(
 (r"/ios/getFriendList", GetFriendListHandler),
 (r"/ios/addFriend", AddFriendHandler),
 (r"/ios/delFriend", DelFriendHandler),
-
 
 ],
 template_path = os.path.join(os.path.dirname(__file__), "template"),
