@@ -54,6 +54,12 @@ class HealthHelperHandler(BaseHandler):
 	def get(self):
 		self.render('HealthHelper.html')
 		
+		
+		
+		
+		
+		
+		
 class PlanDoneHandler(BaseHandler):
 	def get(self):
 		data = [{'sportType':'跑步','place':'操场','st':"yyyy-mm-dd HH:MM:SS",'et':"yyyy-mm-dd HH:MM:SS" },{'sportType':'跑步','place':'操场','st':"yyyy-mm-dd HH:MM:SS",'et':"yyyy-mm-dd HH:MM:SS" }]
@@ -107,6 +113,12 @@ class SendInvitHandler(BaseHandler):
 		print self.get_argument("invitee");
 		self.write(json.dumps("Invitation has been sent"));
 		
+		
+		
+		
+	
+
+	
 class GetFriendListHandler(BaseHandler):
 	def get(self):
 		#data = [{'id':'1', 'name':'Jeny'}, {'id':'2', 'name': 'Tom'},
@@ -131,8 +143,12 @@ class AddFriendHandler(BaseHandler):
 		
 class DelFriendHandler(BaseHandler):
 	def get(self):
-		id = self.get_argument("id");
-		print ("In DelFriendHandler", id, type(id) )
+		fids = self.get_argument("id");
+		me = self.current_user
+		for fid in fids.split(','):
+			print ("In DelFriendHandler", (me, fid), type(fid) )
+			if fid != "":
+				db.delFriendInfo(me,fid)
 		self.write(json.dumps('Delete succeed!'))
 	
 app = tornado.web.Application(

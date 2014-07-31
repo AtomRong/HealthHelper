@@ -112,18 +112,15 @@ class DB:
 	
 	# 将id, fid 互相变为好友, 成功则返回 True
 	def addFriendInfo(self, id, fid):
-		query = """select friendlist from user where id=?"""
-		self.curs.execute(query, id)
-		L1 = self.curs.fetchone();
+		L1 = self.selectFriendListById(id)
 		if L1 == None:   #不存在这个用户
 			return False
-		L1 = json.loads(L1[0])  # 得到 好友的id列表
+		L1 = json.loads(L1)  # 得到 好友的id列表
 		
-		self.curs.execute(query, fid)
-		L2 = self.curs.fetchone();
+		L2 = self.selectFriendListById(fid)
 		if L2 == None:		#不存在这个用户
 			return False
-		L2 = json.loads(L2[0])
+		L2 = json.loads(L2)
 		
 		# 能到达这里，说明id，fid都是已注册用户
 		# 但有可能 双方已经是好友， 要判重
@@ -138,6 +135,28 @@ class DB:
 		self.updateFriendListById(id, json.dumps(L1))
 		self.updateFriendListById(fid, json.dumps(L2))
 		return True
+	
+	
+	def delFriendInfo(self, id, fid):
+		L1 = self.selectFriendListById(id)
+		if L1 == None:   #不存在这个用户
+			return 
+		print("in delFriendInfo", L1)
+		L1 = json.loads(L1)  # 得到 好友的id列表
+		
+		L2 = self.selectFriendListById(fid)
+		if L2 == None:		#不存在这个用户
+			return 
+		L2 = json.loads(L2)
+		
+		if L1.count(fid) > 0 or L2.count(id)>0:
+			return
+		L1.remove( int(fid) )
+		L2.remove( int(id) )
+
+		self.updateFriendListById(id, json.dumps(L1))
+		self.updateFriendListById(fid, json.dumps(L2))
+		
 		
 		
 		

@@ -558,22 +558,21 @@ function delFriend() {
 	var friends = document.getElementsByName('friend');
 	if ( friends.length == 0 ) alert("You have no friend!");
 	else {
-		var ids = '';
+		var ids = new Array();
 		var formParent = $('frd_form');
 		var inviteeParent = $('I_people');
 		for ( var i = 0; i < friends.length; i++ ) {
 			if ( friends[i].checked ) {
-				ids += friends[i].value + ',';
+				ids.push(friends[i].value);
 				inviteeParent.removeChild($(friends[i].value));
-				//$(friends[i].value).removeChild()
 				formParent.removeChild(friends[i].nextSibling);
 				formParent.removeChild(friends[i]);
 			}
 		}
-		if ( !ids ) alert('请选取你想要删除的好友');
+		if (ids.length == 0) alert('请选取你想要删除的好友');
 		else {
 			new Ajax.Request('/delFriend', {
-		method:'get', parameters: {id:ids},
+		method:'get', parameters: {id:ids.join(',')},
 		onSuccess: function(transport) {
 			var response = transport.responseText.evalJSON() ;
 			alert(response);
