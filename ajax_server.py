@@ -40,6 +40,8 @@ class LogoutHandler(BaseHandler):
 class RegisterHandler(tornado.web.RequestHandler):
 	def post(self):
 		self.render('register.html')
+	def get(self)
+		self.render('register.html')
 		
 class RegisterCheckHandler(tornado.web.RequestHandler):
 	def get(self):

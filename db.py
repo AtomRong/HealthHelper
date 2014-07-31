@@ -193,14 +193,14 @@ class DB:
 			
 if __name__ == "__main__":
 	db = DB("my.db")
-	"""
+
 	db.insertUserTable(None, "tom", "Tom", json.dumps([1,2,3]))
 	db.insertUserTable(None, "xue", "Xue", json.dumps([1,2,3]))
 	db.insertUserTable(None, "tina", "Tina", json.dumps([1,2,3]))
 	db.insertUserTable(None, "xiana", "Xiana", json.dumps([1,2,3]))
 	db.insertUserTable(None, "mei", "Mei", json.dumps([1,2,3]))
 	db.insertUserTable(None, "bob", "Bob", json.dumps([1,2,3]))
-	"""	
+
 	
 	print db.selectNameById(5)
 	print db.selectPasswordById(5)

@@ -11,7 +11,7 @@ function getFriend() {
 		showFriendlist( response );
 	},
 	onFailure:function() {
-		alert('Something went wrong In get friend');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -104,7 +104,7 @@ function planDone() {
 		else planTable('plan_d', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong in planDone');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -120,7 +120,7 @@ function planUndone() {
 		else planTable('plan_u', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong in planUndone');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -166,7 +166,7 @@ function recordWeek() {
 		else recordTable('record_W', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong In recordWeek');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -182,7 +182,7 @@ function recordMonth() {
 		else recordTable('record_M', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong in recordMonth');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -230,16 +230,16 @@ function recordTable( id, response ) {
 //显示已接受的约跑
 function invitPro() {
 	new Ajax.Request('/invitPro', {
-	method:'get',
+	method:'get', 
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		//alert(response);
+
 		$('invit_pro').setAttribute('disabled', 'disabled');
 		if (!response) alert('There has no data');
 		else inviteTable( 'invit_pr', response );
 	},
 	onFailure:function() {
-		alert('Something went wrong invitPro');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -255,7 +255,7 @@ function invitPend() {
 		else inviteTable( 'invit_pe', response );
 	},
 	onFailure:function() {
-		alert('Something went wrong in invitPend');
+		alert('Something went wrong...');
 	}
 	});
 }
@@ -264,8 +264,8 @@ function inviteTable( id, response ) {
 	var tb = $(id);
 	tb.style.display = 'block';
 	var td, txtData;
+
 	for ( var i = 0; i < response.length; i++ ){
-		
 		var tr = document.createElement('tr');
 		td = document.createElement('td');
 		txtData = document.createTextNode(response[i].st);
@@ -288,7 +288,7 @@ function inviteTable( id, response ) {
 		tr.appendChild(td);
 		
 		td = document.createElement('td');
-		txtData = document.createTextNode(me);
+		txtData = document.createTextNode('me');
 		td.appendChild(txtData);
 		tr.appendChild(td);
 		
@@ -382,7 +382,7 @@ function createPlan() {
 		alert(response);
 	},
 	onFailure:function() {
-		alert('Something went wrong in create plan ');
+		alert('Something went wrong...');
 	}
 	});
 	
@@ -484,7 +484,7 @@ function invitSend() {
 		alert(response);
 	},
 	onFailure:function() {
-		alert('Something went wrong invitSend');
+		alert('Something went wrong...');
 	}
 	});
 	
@@ -548,7 +548,7 @@ function addFriend() {
 				alert("你查找的好友不存在！");
 		},
 		onFailure:function() {
-			alert('Something went wrong in addFriend');
+			alert('Something went wrong...');
 		}
 		});
 	}
@@ -558,27 +558,28 @@ function delFriend() {
 	var friends = document.getElementsByName('friend');
 	if ( friends.length == 0 ) alert("You have no friend!");
 	else {
-		var ids = new Array();
+		var ids = '';
 		var formParent = $('frd_form');
 		var inviteeParent = $('I_people');
 		for ( var i = 0; i < friends.length; i++ ) {
 			if ( friends[i].checked ) {
-				ids.push(friends[i].value);
+				ids += friends[i].value + ',';
 				inviteeParent.removeChild($(friends[i].value));
+				//$(friends[i].value).removeChild()
 				formParent.removeChild(friends[i].nextSibling);
 				formParent.removeChild(friends[i]);
 			}
 		}
-		if (ids.length == 0) alert('请选取你想要删除的好友');
+		if ( !ids ) alert('请选取你想要删除的好友');
 		else {
 			new Ajax.Request('/delFriend', {
-		method:'get', parameters: {id:ids.join(',')},
+		method:'get', parameters: {id:ids},
 		onSuccess: function(transport) {
 			var response = transport.responseText.evalJSON() ;
 			alert(response);
 		},
 		onFailure:function() {
-			alert('Something went wrong delFriend');
+			alert('Something went wrong...');
 		}
 		});
 		}
