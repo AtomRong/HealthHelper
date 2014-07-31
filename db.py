@@ -56,9 +56,12 @@ class DB:
 		return self.curs.fetchone()[0]
 		
 	def selectPasswordById(self, id):
-		print("In selectPasswordById ", id)
-		query = "select password from user where id=?"
-		self.curs.execute( query, str(id) )
+		query = "select password from user where id=%s" % id
+		print("In selectPasswordById ", query)
+		try:
+			self.curs.execute( query )
+		except sqlite3.OperationalError:
+			pass
 		result = self.curs.fetchone()
 		if result == None:
 			return None

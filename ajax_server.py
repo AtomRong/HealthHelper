@@ -73,7 +73,7 @@ class PlanUndoneHandler(BaseHandler):
 
 #因为在js中已经检查过时间的正确性，所以在这里只需要把新计划放入数据库即可。
 class CreatePlanHandler(BaseHandler):
-	def get(self):
+	def get(self): 
 		st = self.get_argument("st")
 		print st
 		self.write(json.dumps("Create succeed!"))
