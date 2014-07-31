@@ -160,13 +160,15 @@ app = tornado.web.Application(
 
 (r"/planDone", PlanDoneHandler),
 (r"/planUndone", PlanUndoneHandler),
+(r"/createPlan", CreatePlanHandler),
+
 (r"/recordWeek", RecordWeekHandler),
 (r"/recordMonth", RecordMonthHandler),
 
 (r"/invitPro", InvitProHandler),
 (r"/invitPend", InvitPendHandler),
-(r"/createPlan", CreatePlanHandler),
 (r"/sentInvit", SendInvitHandler),
+
 (r"/getFriendList", GetFriendListHandler),
 (r"/addFriend", AddFriendHandler),
 (r"/delFriend", DelFriendHandler),
@@ -181,14 +183,16 @@ app = tornado.web.Application(
 
 (r"/ios/planDone", PlanDoneHandler),
 (r"/ios/planUndone", PlanUndoneHandler),
+(r"/ios/createPlan", CreatePlanHandler),
+
 (r"/ios/recordWeek", RecordMonthHandler),
 (r"/ios/recordMonth", RecordMonthHandler),
 (r"/ios/addRecord", AddRecordHandler),
 
 (r"/ios/invitPro", InvitProHandler),
 (r"/ios/invitPend", InvitPendHandler),
-(r"/ios/createPlan", CreatePlanHandler),
 (r"/ios/sentInvit", SendInvitHandler),
+
 (r"/ios/getFriendList", GetFriendListHandler),
 (r"/ios/addFriend", AddFriendHandler),
 (r"/ios/delFriend", DelFriendHandler),
