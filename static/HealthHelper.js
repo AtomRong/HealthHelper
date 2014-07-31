@@ -11,7 +11,7 @@ function getFriend() {
 		showFriendlist( response );
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong In get friend');
 	}
 	});
 }
@@ -104,7 +104,7 @@ function planDone() {
 		else planTable('plan_d', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong in planDone');
 	}
 	});
 }
@@ -120,7 +120,7 @@ function planUndone() {
 		else planTable('plan_u', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong in planUndone');
 	}
 	});
 }
@@ -166,7 +166,7 @@ function recordWeek() {
 		else recordTable('record_W', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong In recordWeek');
 	}
 	});
 }
@@ -182,7 +182,7 @@ function recordMonth() {
 		else recordTable('record_M', response);
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong in recordMonth');
 	}
 	});
 }
@@ -239,7 +239,7 @@ function invitPro() {
 		else inviteTable( 'invit_pr', response );
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong invitPro');
 	}
 	});
 }
@@ -255,7 +255,7 @@ function invitPend() {
 		else inviteTable( 'invit_pe', response );
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong in invitPend');
 	}
 	});
 }
@@ -382,7 +382,7 @@ function createPlan() {
 		alert(response);
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong in create plan ');
 	}
 	});
 	
@@ -484,7 +484,7 @@ function invitSend() {
 		alert(response);
 	},
 	onFailure:function() {
-		alert('Something went wrong...');
+		alert('Something went wrong invitSend');
 	}
 	});
 	
@@ -548,7 +548,7 @@ function addFriend() {
 				alert("你查找的好友不存在！");
 		},
 		onFailure:function() {
-			alert('Something went wrong...');
+			alert('Something went wrong in addFriend');
 		}
 		});
 	}
@@ -579,7 +579,7 @@ function delFriend() {
 			alert(response);
 		},
 		onFailure:function() {
-			alert('Something went wrong...');
+			alert('Something went wrong delFriend');
 		}
 		});
 		}

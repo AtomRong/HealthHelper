@@ -2,6 +2,11 @@
 import sqlite3
 import json
 
+def toUniqueAndSort(L):
+	L = list(set(L))
+	L.sort()
+	return L
+
 class DB:
 	def __init__(self, name):
 		self.db = sqlite3.connect(name)
@@ -70,8 +75,8 @@ class DB:
 			return result[0]
 	
 	def selectFriendListById(self, id):
-		query = "select friendlist from user where id=?"
-		self.curs.execute( query, str(id) )
+		query = "select friendlist from user where id=%s" % str(id)
+		self.curs.execute(query)
 		result = self.curs.fetchone() #拿到的是 json.dumps出来的unicode字符串；
 		if result == None:
 			return None
@@ -97,7 +102,45 @@ class DB:
 			d["name"] = i[1]
 			result.append(d)
 		return result
-			
+	
+	def updateFriendListById(self, id, json_fdl):
+		"""根据 id 更新好友列表， json_fdl """
+		query = """ update user set friendlist="%s" where id=%s""" %(json_fdl,str(id))
+		print( query )
+		self.curs.execute(query)
+		self.db.commit()
+	
+	# 将id, fid 互相变为好友, 成功则返回 True
+	def addFriendInfo(self, id, fid):
+		query = """select friendlist from user where id=?"""
+		self.curs.execute(query, id)
+		L1 = self.curs.fetchone();
+		if L1 == None:   #不存在这个用户
+			return False
+		L1 = json.loads(L1[0])  # 得到 好友的id列表
+		
+		self.curs.execute(query, fid)
+		L2 = self.curs.fetchone();
+		if L2 == None:		#不存在这个用户
+			return False
+		L2 = json.loads(L2[0])
+		
+		# 能到达这里，说明id，fid都是已注册用户
+		# 但有可能 双方已经是好友， 要判重
+		if L1.count(fid) > 0 or L2.count(id)>0:
+			return False
+		
+		L1.append(fid)
+		L2.append(id)
+		L1 = toUniqueAndSort(L1)
+		L2 = toUniqueAndSort(L2)
+		
+		self.updateFriendListById(id, json.dumps(L1))
+		self.updateFriendListById(fid, json.dumps(L2))
+		return True
+		
+		
+		
 ################## Record table Operation   #######################			
 	def insertRecordTable(self, *para):
 		print( para )

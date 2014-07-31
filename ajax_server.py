@@ -15,14 +15,14 @@ class BaseHandler(tornado.web.RequestHandler):
 		if not self.current_user:
 			self.redirect("/")
 			return
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
+	def get_current_user(self):
+		return self.get_secure_cookie("user")
 
-class LoginHandler(BaseHandler):
+class LoginHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.render('login.html')
 	def post(self):
-		id = self.get_argument('id')
+		id = int(self.get_argument('id'))
 		pw = self.get_argument('password')
 		print( (id,pw) )
 		if str(db.selectPasswordById(id)) == str(pw):
@@ -46,7 +46,7 @@ class RegisterCheckHandler(BaseHandler):
 		#user和password是用户注册时记录的
 		user = self.get_argument('user');
 		pw = self.get_argument('password');
-		newid = db.insertUserTable(None, pw, user, json.dumps(""))
+		newid = db.insertUserTable(None, pw, user, json.dumps([]))
 		print("in RegisterCheckHandler", newid)
 		self.write(json.dumps(newid))
 			
@@ -57,7 +57,6 @@ class HealthHelperHandler(BaseHandler):
 class PlanDoneHandler(BaseHandler):
 	def get(self):
 		data = [{'sportType':'跑步','place':'操场','st':"yyyy-mm-dd HH:MM:SS",'et':"yyyy-mm-dd HH:MM:SS" },{'sportType':'跑步','place':'操场','st':"yyyy-mm-dd HH:MM:SS",'et':"yyyy-mm-dd HH:MM:SS" }]
-		
 		self.write(json.dumps(data))
 		
 class PlanUndoneHandler(BaseHandler):
@@ -113,26 +112,27 @@ class GetFriendListHandler(BaseHandler):
 		#data = [{'id':'1', 'name':'Jeny'}, {'id':'2', 'name': 'Tom'},
 		#{'id':'3', 'name':'Jeny'},{'id':'4', 'name':'Jeny'},{'id':'5', #'name':'Jeny'},{'id':'6', 'name':'Jeny'},{'id':'7', 'name':'Jeny'}]
 		me = self.current_user
-		print ("In GetFriendListHandler", me)
 		data = db.getFriendInfoById(me)
+		print ("In GetFriendListHandler", me, data)
 		self.write(json.dumps(data))
 	
 class AddFriendHandler(BaseHandler):
 	def get(self):
-		me = self.get_argument('me')
-		print me
-		id = self.get_argument("id");
-		print id
-		data = [{'id': id, 'name':'hello'}]
-		self.write(json.dumps(data))
-		
-		#如果添加的好友不存在，则返回空串
-		#self.write(json.dumps(""))
+		me = self.current_user
+		fid = self.get_argument("id");
+		print (type(fid), "me,friend", me, fid, "In AddFriendHandler ")
+			
+		if db.addFriendInfo(me, fid) == False:
+			self.write(json.dumps(""))
+		else:
+			friendname = db.selectNameById(fid)
+			data = {'id': fid, 'name':friendname}
+			self.write(json.dumps(data)) #如果添加的好友不存在，则返回空串
 		
 class DelFriendHandler(BaseHandler):
 	def get(self):
 		id = self.get_argument("id");
-		print id
+		print ("In DelFriendHandler", id, type(id) )
 		self.write(json.dumps('Delete succeed!'))
 	
 app = tornado.web.Application(
