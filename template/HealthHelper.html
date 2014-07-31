@@ -11,6 +11,9 @@
 </head>
 
 <body>
+	<form action='/logout' method='post'>
+		<input type='submit', name='Logout', id='logout' value = 'Logout' />
+	</form>
 	<h1>HealthyHelper</h1>
 	
 	<div id = "outer">
@@ -35,11 +38,26 @@
 					<input type="button" name="plan" value="计划" class="bnt" />
 					<ul id="plan" class="forHid">
 						<li><input type="button" name="done" value="已完成" class="bnt" id="plan_done" /></li>
-						<div id="plan_d">
-							
+						<div>
+							<table rules=all id="plan_d" >
+								<tr>
+									<th>起始时间</th>
+									<th>结束时间</th>
+									<th>运动地点</th>
+									<th>运动类型</th>
+								</tr>
+							</table>
 						</div>
 						<li><input type="button" name="undone" value="待完成" class="bnt" id="plan_undone" /></li>
-						<div id="plan_u">
+						<div>
+							<table rules=all id="plan_u">
+								<tr>
+									<th>起始时间</th>
+									<th>结束时间</th>
+									<th>运动地点</th>
+									<th>运动类型</th>
+								</tr>
+							</table>
 						</div>
 						<li class='outList'><input type="button" name="newPlan" value="制定新计划" class="bnt" id="plan_new "/>
 						<div class="forHid">
@@ -238,10 +256,30 @@
 					<input type="button" name="record" value="记录" class="bnt" />
 					<ul id="record" class="forHid">
 						<li><input type="button" name="month" value="一周内" class="bnt" id="record_week" /></li>
-						<div id="record_W">
+						<div>
+							<table rules=all id="record_W">
+								<tr>
+									<th>起始时间</th>
+									<th>结束时间</th>
+									<th>运动地点</th>
+									<th>运动距离/米</th>
+									<th>运动时长/sec</th>
+									<th>卡路里消耗/calorie</th>
+								</tr>
+							</table>
 						</div>
 						<li><input type="button" name="week" value="一月内" class="bnt" id="record_month" /></li>
-						<div id="record_M">
+						<div>
+							<table rules=all id="record_M">
+								<tr>
+									<th>起始时间</th>
+									<th>结束时间</th>
+									<th>运动地点</th>
+									<th>运动距离/米</th>
+									<th>运动时长/sec</th>
+									<th>卡路里消耗/calorie</th>
+								</tr>
+							</table>
 						</div>
 					</ul>
 				</li>
@@ -249,15 +287,35 @@
 					<input type="button" name="invitation" value="约跑" class="bnt" />
 					<ul id="invitation" class="forHid">
 						<li><input type="button" name="processed" value="已处理" class="bnt" id="invit_pro" /></li>
-						<div id="invit_pr">
+						<div>
+							<table rules=all id="invit_pr">
+								<tr>
+									<th>起始时间</th>
+									<th>结束时间</th>
+									<th>运动地点</th>
+									<th>运动类型</th>
+									<th>发出邀请者</th>
+									<th>受邀者</th>
+								</tr>
+							</table>
 						</div>
 						<li><input type="button" name="pending" value="待处理" class="bnt" id="invit_pend" /></li>
-						<div id="invit_pe">
+						<div>
+							<table rules=all id="invit_pe">
+								<tr>
+									<th>起始时间</th>
+									<th>结束时间</th>
+									<th>运动地点</th>
+									<th>运动类型</th>
+									<th>发出邀请者</th>
+									<th>受邀者</th>
+								</tr>
+							</table>
 						</div>
 						<li class="outList"><input type="button" name="send" value="发出邀请" class="bnt" id="invit_send" />
 						<div class="forHid" id="">
-							<p>时间:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="iBegin" id="i_begin"  onclick="WdatePicker()" />
-							<select name="ihour" id="ihour">
+							<p>起始时间:<input type="text" name="iBegin" id="i_begin"  onclick="WdatePicker()" />
+							<select name="ibhour" id="ibhour">
 							<option value="00">00</option>
 							<option value="01">01</option>
 							<option value="02">02</option>
@@ -284,7 +342,7 @@
 							<option value="23">23</option>						
 							</select>
 							&nbsp;:
-							<select name="iminute" id="iminute" >
+							<select name="ibminute" id="ibminute" >
 							<option value="00">00</option>
 							<option value="01">01</option>
 							<option value="02">02</option>
@@ -347,6 +405,99 @@
 							<option value="59">59</option>
 							</select>
 							</p>
+							
+							<p>起始时间:<input type="text" name="iEnd" id="i_end"  onclick="WdatePicker()" />
+							<select name="iehour" id="iehour">
+							<option value="00">00</option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>						
+							</select>
+							&nbsp;:
+							<select name="ieminute" id="ieminute" >
+							<option value="00">00</option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>
+							<option value="24">24</option>
+							<option value="25">25</option>
+							<option value="26">26</option>
+							<option value="27">27</option>
+							<option value="28">28</option>
+							<option value="29">29</option>
+							<option value="30">30</option>
+							<option value="33">33</option>
+							<option value="32">32</option>
+							<option value="33">33</option>
+							<option value="34">34</option>
+							<option value="35">35</option>
+							<option value="36">36</option>
+							<option value="37">37</option>
+							<option value="38">38</option>
+							<option value="39">39</option>
+							<option value="40">40</option>
+							<option value="41">41</option>
+							<option value="44">44</option>
+							<option value="43">43</option>
+							<option value="44">44</option>
+							<option value="45">45</option>
+							<option value="46">46</option>
+							<option value="47">47</option>
+							<option value="48">48</option>
+							<option value="49">49</option>
+							<option value="50">50</option>
+							<option value="51">51</option>
+							<option value="52">52</option>
+							<option value="55">55</option>
+							<option value="54">54</option>
+							<option value="55">55</option>
+							<option value="56">56</option>
+							<option value="57">57</option>
+							<option value="58">58</option>
+							<option value="59">59</option>
+							</select>
+							</p>
+							
 							<p>地点:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="begin" id="I_addr" /></p>
 							<p>运动类型:<input type="text" name="begin" id="I_type" /></p>
 							<p>受邀者:&nbsp;&nbsp;
@@ -360,12 +511,5 @@
 			</ul>
 		</div>
 	</div>
-	
-	<script>
-		/*alert("xixi");
-		window.onload = function() {
-			alert("Hello");
-		};*/
-	</script>
 </body>
 </html>

@@ -2,9 +2,6 @@
 addLoadEvent(waitForButton);
 addLoadEvent(getFriend);
 
-var isPlanUndonePlay = false;
-var isInvitPendingPlay = false;
-
 //获取好友信息
 function getFriend() {	
 	new Ajax.Request('/getFriendList', {
@@ -96,145 +93,15 @@ function waitForButton() {
 	$('delFriend').observe('click', delFriend);
 }
 
-//运动计划表头
-function createPlanHeader() {
-	var tb = document.createElement('table');
-	tb.setAttribute('border', 1);
-	var trHeader = document.createElement('tr');
-	var thH1 = document.createElement('th');
-	var txt1 = document.createTextNode('起始时间');
-	var thH2 = document.createElement('th');
-	var txt2 = document.createTextNode('结束时间');
-	var thH3 = document.createElement('th');
-	var txt3 = document.createTextNode('运动地点');
-	var thH4 = document.createElement('th');
-	var txt4 = document.createTextNode('运动类型');
-	thH1.appendChild(txt1);
-	thH2.appendChild(txt2);
-	thH3.appendChild(txt3);
-	thH4.appendChild(txt4);
-	trHeader.appendChild(thH1);
-	trHeader.appendChild(thH2);
-	trHeader.appendChild(thH3);
-	trHeader.appendChild(thH4);
-	tb.appendChild(trHeader);
-	return tb;
-}
-
-//运动记录表头
-function createRecordHeader() {
-	var tb = document.createElement('table');
-	tb.setAttribute('border', 1);
-	var trHeader = document.createElement('tr');
-	var thH1 = document.createElement('th');
-	var txt1 = document.createTextNode('起始时间');
-	var thH2 = document.createElement('th');
-	var txt2 = document.createTextNode('结束时间');
-	var thH3 = document.createElement('th');
-	var txt3 = document.createTextNode('运动地点');
-	var thH4 = document.createElement('th');
-	var txt4 = document.createTextNode('运动距离');
-	var thH5 = document.createElement('th');
-	var txt5 = document.createTextNode('运动时长');
-	var thH6 = document.createElement('th');
-	var txt6 = document.createTextNode('卡路里消耗');
-	thH1.appendChild(txt1);
-	thH2.appendChild(txt2);
-	thH3.appendChild(txt3);
-	thH4.appendChild(txt4);
-	thH5.appendChild(txt5);
-	thH6.appendChild(txt6);
-	trHeader.appendChild(thH1);
-	trHeader.appendChild(thH2);
-	trHeader.appendChild(thH3);
-	trHeader.appendChild(thH4);
-	trHeader.appendChild(thH5);
-	trHeader.appendChild(thH6);
-	tb.appendChild(trHeader);
-	return tb;
-}
-
-//邀请记录表头
-function createInvitationHeader() {
-	var tb = document.createElement('table');
-	tb.setAttribute('border', 1);
-	var trHeader = document.createElement('tr');
-	var thH1 = document.createElement('th');
-	var txt1 = document.createTextNode('时间');
-	var thH2 = document.createElement('th');
-	var txt2 = document.createTextNode('地点');
-	var thH3 = document.createElement('th');
-	var txt3 = document.createTextNode('运动类型');
-	var thH4 = document.createElement('th');
-	var txt4 = document.createTextNode('发出邀请者');
-	var thH5 = document.createElement('th');
-	var txt5 = document.createTextNode('受邀者');
-	thH1.appendChild(txt1);
-	thH2.appendChild(txt2);
-	thH3.appendChild(txt3);
-	thH4.appendChild(txt4);
-	thH5.appendChild(txt5);
-	trHeader.appendChild(thH1);
-	trHeader.appendChild(thH2);
-	trHeader.appendChild(thH3);
-	trHeader.appendChild(thH4);
-	trHeader.appendChild(thH5);
-	tb.appendChild(trHeader);
-	return tb;
-}
-
-//生成对应的表格
-function createTable( bnt, id, response ) {
-	if ( !document.createElement ) return false;
-	if ( !document.createTextNode ) return false;
-	
-	$(bnt).setAttribute("disabled", "disabled");
-	
-	var div_done = $(id);
-		if (!response) {
-			alert("There has no data!");
-		}
-		else {
-			var tb;
-			if ( id === "plan_d" || id === "plan_u") {
-				tb = createPlanHeader();
-				if ( id === "plan_u" ) {
-					isPlanUndonePlay = true;
-					tb.setAttribute('id', 'planUndone_table');
-				}
-			}
-			else if ( id === "record_M" || id === "record_W") 
-				tb = createRecordHeader();
-			else {
-				tb = createInvitationHeader();
-				if ( id === 'invit_pe' ) {
-					isInvitPendingPlay = true;
-					tb.setAttribute('id', 'invitPend_table');
-				}
-			}
-			//alert(response.length);
-			for ( var i = 0; i < response.length; i++ ){
-				var tr = document.createElement('tr');
-				for ( var j = 0; j < response[i].length; j++ ) {
-					var td = document.createElement('td');
-					var txtData = document.createTextNode(response[i][j]);
-					td.appendChild(txtData);
-					tr.appendChild(td);
-				}
-				tb.appendChild(tr);
-			}
-			div_done.appendChild(tb);
-		}
-		//alert(response);
-}
-
 //显示已完成的计划
 function planDone() {
 	new Ajax.Request('/planDone', {
 	method:'get',
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		createTable( "plan_done", 'plan_d', response);
+		$('plan_done').setAttribute('disabled', 'disabled');
+		if (!response) alert('There has no data');
+		else planTable('plan_d', response);
 	},
 	onFailure:function() {
 		alert('Something went wrong...');
@@ -248,12 +115,44 @@ function planUndone() {
 	method:'get',
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		createTable( "plan_undone", 'plan_u', response);
+		$('plan_undone').setAttribute('disabled', 'disabled');
+		if (!response) alert('There has no data');
+		else planTable('plan_u', response);
 	},
 	onFailure:function() {
 		alert('Something went wrong...');
 	}
 	});
+}
+
+function planTable( id, response ) {
+	var tb = $(id);
+	tb.style.display = 'block';
+	var td, txtData;
+	for ( var i = 0; i < response.length; i++ ){
+		var tr = document.createElement('tr');
+		var td = document.createElement('td');
+		var txtData = document.createTextNode(response[i].st);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		var td = document.createElement('td');
+		var txtData = document.createTextNode(response[i].et);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		var td = document.createElement('td');
+		var txtData = document.createTextNode(response[i].place);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		var td = document.createElement('td');
+		var txtData = document.createTextNode(response[i].sportType);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		tb.appendChild(tr);
+	}
 }
 
 //显示一个星期内的运动记录
@@ -262,7 +161,9 @@ function recordWeek() {
 	method:'get',
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		createTable( "record_week", 'record_W', response);
+		$('record_week').setAttribute('disabled', 'disabled');
+		if (!response) alert('There has no data');
+		else recordTable('record_W', response);
 	},
 	onFailure:function() {
 		alert('Something went wrong...');
@@ -276,12 +177,54 @@ function recordMonth() {
 	method:'get',
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		createTable( "record_month", 'record_M', response);
+		$('record_month').setAttribute('disabled', 'disabled');
+		if (!response) alert('There has no data');
+		else recordTable('record_M', response);
 	},
 	onFailure:function() {
 		alert('Something went wrong...');
 	}
 	});
+}
+
+function recordTable( id, response ) {
+	var tb = $(id);
+	tb.style.display = 'block';
+	var td, txtData;
+	for ( var i = 0; i < response.length; i++ ){
+		var tr = document.createElement('tr');
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].st);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].et);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].place);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].distance);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].sportTime);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].calorie);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		tb.appendChild(tr);
+	}
 }
 
 //显示已接受的约跑
@@ -290,7 +233,10 @@ function invitPro() {
 	method:'get',
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		createTable( "invit_pro", 'invit_pr', response);
+		//alert(response);
+		$('invit_pro').setAttribute('disabled', 'disabled');
+		if (!response) alert('There has no data');
+		else inviteTable( 'invit_pr', response );
 	},
 	onFailure:function() {
 		alert('Something went wrong...');
@@ -304,12 +250,55 @@ function invitPend() {
 	method:'get',
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
-		createTable( "invit_pend", 'invit_pe', response);
+		$('invit_pend').setAttribute('disabled', 'disabled');
+		if (!response) alert('There has no data');
+		else inviteTable( 'invit_pe', response );
 	},
 	onFailure:function() {
 		alert('Something went wrong...');
 	}
 	});
+}
+
+function inviteTable( id, response ) {
+	var tb = $(id);
+	tb.style.display = 'block';
+	var td, txtData;
+	for ( var i = 0; i < response.length; i++ ){
+		
+		var tr = document.createElement('tr');
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].st);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].et);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].place);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].sportType);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(me);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(response[i].invitee);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		tb.appendChild(tr);
+	}
 }
 
 //判断两个时间的前后s-start，e-end
@@ -387,7 +376,7 @@ function createPlan() {
 	
 	//将新数据发给服务器
 	new Ajax.Request('/createPlan', {
-	method:'get', parameters: {begin: beginTime, end: endTime, address: addr, type: type},
+	method:'get', parameters: { st: beginTime, et: endTime, place: addr, sportType: type},
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
 		alert(response);
@@ -397,8 +386,9 @@ function createPlan() {
 	}
 	});
 	
-	if ( isPlanUndonePlay )  {
-		var tb = $('planUndone_table');
+	if ( $('plan_undone').getAttribute('disabled') == 'disabled' )  {
+		var tb = $('plan_u');
+		tb.style.display = 'block';
 		var tr = document.createElement('tr');
 		var	td, txtData;
 		
@@ -428,21 +418,22 @@ function createPlan() {
 
 //发送邀请
 function invitSend() {	
-	var time = $F('i_begin');
-	var addr = $F('I_addr');
-	var type = $F('I_type');
+	var begin = $F("i_begin");
+	var end = $F("i_end");
+	var addr = $F("I_addr");
+	var type = $F("I_type");
 	var people = $F('I_people');
 	
-	if ( !time || !addr || !type || !people.length ) {
+	if ( !begin || !end || !addr || !type || !people.length ) {
 		alert("不能留空！");
 		return false;
 	}
 	
 	var result ;
 	
-	var tStr = time.split('-');
-	var tHour = $F("ihour");
-	var tMin = $F("iminute");
+	var beginStr = begin.split('-');
+	var beginHour = $F("ibhour");
+	var beginMin = $F("ibminute");
 	
 	var current = new Date;
 	var curYear = current.getFullYear();
@@ -451,17 +442,32 @@ function invitSend() {
 	var curHour = current.getHours();
 	var curMinute = current.getMinutes();
 	
-	//判断预约的时间是否早于当前的时间
+	//判断运动开始时间是否早于当前时间
 	result = judgeTime(curYear,curMonth,curDay,curHour,curMinute,
-	parseInt(tStr[0]),parseInt(tStr[1]),parseInt(tStr[2]),tHour,tMin);
+	parseInt(beginStr[0]),parseInt(beginStr[1]),parseInt(beginStr[2]),beginHour,beginMin);
 
 	if ( !result ) {
-		alert( '时间早于当前时间！');
+		alert( '开始时间早于当前时间！');
+		return false;
+	}
+	
+	var endStr = end.split('-');
+	var endHour = $F("iehour");
+	var endMin = $F("ieminute");
+	
+	//判断运动结束时间是否早于当前时间
+	result = judgeTime(parseInt(beginStr[0]),parseInt(beginStr[1]),parseInt(beginStr[2]),beginHour,beginMin,
+	parseInt(endStr[0]),parseInt(endStr[1]),parseInt(endStr[2]),endHour,endMin);
+	
+	if ( !result ) {
+		alert( '开始时间晚于结束时间！');
 		return false;
 	}
 	
 	//将日期和时间组成一个字符串，如2014-06-11 20:11
-	var Time = time + ' ' + tHour + ':' + tMin;
+	var beginTime = begin + ' ' + beginHour + ':' + beginMin;
+	var endTime = end + ' ' + endHour + ':' + endMin;
+
 	var inviteesId = ''; //用于获取好友的id，并且用逗号隔开
 	var inviteesName = '';
 	for ( var i = 0; i < people.length; i++ ) {
@@ -472,7 +478,7 @@ function invitSend() {
 	
 	//将新数据发给服务器
 	new Ajax.Request('/sentInvit', {
-	method:'get', parameters: {time: Time, address: addr, type: type, invitees: inviteesId},
+	method:'get', parameters: {st: beginTime, et: endTime, place: addr, sportType: type, invitee: inviteesId},
 	onSuccess: function(transport) {
 		var response = transport.responseText.evalJSON() ;
 		alert(response);
@@ -482,13 +488,19 @@ function invitSend() {
 	}
 	});
 	
-	if ( isInvitPendingPlay ) {
-		var tb = $('invitPend_table');
+	if ( $('invit_pend').getAttribute('disabled') == 'disabled' ) {
+		var tb = $('invit_pe');
+		tb.style.display = 'block';
 		var tr = document.createElement('tr');
 		var	td, txtData;
 		
 		td = document.createElement('td');
-		txtData = document.createTextNode(Time);
+		txtData = document.createTextNode(beginTime);
+		td.appendChild(txtData);
+		tr.appendChild(td);
+		
+		td = document.createElement('td');
+		txtData = document.createTextNode(endTime);
 		td.appendChild(txtData);
 		tr.appendChild(td);
 		
@@ -503,7 +515,7 @@ function invitSend() {
 		tr.appendChild(td);
 		
 		td = document.createElement('td');
-		txtData = document.createTextNode("me");
+		txtData = document.createTextNode('me');
 		td.appendChild(txtData);
 		tr.appendChild(td);
 		

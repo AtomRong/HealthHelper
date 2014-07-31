@@ -82,3 +82,13 @@ h1::first-letter {
 .fortime {
 	width: 40px;
 }
+
+table {
+	display:none;
+}
+
+#logout {
+	position: absolute;
+	top: 70px;
+	right: 150px;
+}

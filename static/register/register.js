@@ -26,6 +26,17 @@ function proceed() {
 	var form = document.createElement('form');
 	form.setAttribute('method','get');
 	form.setAttribute('action','/');
+	/*var id = document.createElement('input');
+	id.setAttribute('type', 'text');
+	id.setAttribute('name', 'id');
+	id.setAttribute('value', '.');
+	var password = document.createElement('input');
+	password.setAttribute('type', 'text');
+	password.setAttribute('name', 'password');
+	password.setAttribute('value', '.');
+	form.appendChild(id);
+	form.appendChild(password);
+	*/
 	form.style.display='hidden';
 	document.body.appendChild(form);
 	form.submit();
