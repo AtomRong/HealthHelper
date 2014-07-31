@@ -130,11 +130,11 @@ class DB:
 		if L1.count(fid) > 0 or L2.count(id)>0:
 			return False
 		
-		L1.append(fid)
-		L2.append(id)
+		L1.append( int(fid) )
+		L2.append( int(id) )
 		L1 = toUniqueAndSort(L1)
 		L2 = toUniqueAndSort(L2)
-		
+		print(L1)
 		self.updateFriendListById(id, json.dumps(L1))
 		self.updateFriendListById(fid, json.dumps(L2))
 		return True

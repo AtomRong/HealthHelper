@@ -22,7 +22,7 @@ class LoginHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.render('login.html')
 	def post(self):
-		id = int(self.get_argument('id'))
+		id = self.get_argument('id')
 		pw = self.get_argument('password')
 		print( (id,pw) )
 		if str(db.selectPasswordById(id)) == str(pw):
@@ -37,11 +37,11 @@ class LogoutHandler(BaseHandler):
 		self.set_secure_cookie("user", "")
 		self.redirect('/')
 
-class RegisterHandler(BaseHandler):
+class RegisterHandler(tornado.web.RequestHandler):
 	def post(self):
 		self.render('register.html')
 		
-class RegisterCheckHandler(BaseHandler):
+class RegisterCheckHandler(tornado.web.RequestHandler):
 	def get(self):
 		#user和password是用户注册时记录的
 		user = self.get_argument('user');
